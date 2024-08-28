@@ -68,14 +68,6 @@ namespace DbMigrations
 
         }
 
-        public void ShowOptions()
-        {
-            Console.WriteLine("1.- Check DataBase current status");
-            Console.WriteLine("2.- Generate Migration HTML Report");
-            Console.WriteLine("3.- Perform Migration");
-            Console.WriteLine("4.- Exit");
-        }
-
         private void ValidateConnection()
         {
             bool dbStabishConnection = _upgrader.TryConnect(out string msg);
