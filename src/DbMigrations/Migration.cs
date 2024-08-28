@@ -60,7 +60,7 @@ namespace DbMigrations
         {
             ValidateConnection();
 
-            _upgrader.GenerateUpgradeHtmlReport("path");
+            _upgrader.GenerateUpgradeHtmlReport(reportPath);
 
         }
 
