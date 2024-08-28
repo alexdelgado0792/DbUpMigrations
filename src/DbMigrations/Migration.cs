@@ -29,6 +29,10 @@ namespace DbMigrations
             {
                 _upgrader.PerformUpgrade();
             }
+            else 
+            {
+                Console.WriteLine("Up to Date, No migration needed.");
+            }
 
         }
         public void ShowScriptsHistory()
@@ -60,17 +64,16 @@ namespace DbMigrations
         {
             ValidateConnection();
 
-            _upgrader.GenerateUpgradeHtmlReport(reportPath);
+            _upgrader.GenerateUpgradeHtmlReport(_reportPath);
 
         }
 
-        public void ShowOptions(int option)
+        public void ShowOptions()
         {
-
-            //switch (option)
-            //{
-            //    when option == 1: Console.WriteLine(); break;
-            //}
+            Console.WriteLine("1.- Check DataBase current status");
+            Console.WriteLine("2.- Generate Migration HTML Report");
+            Console.WriteLine("3.- Perform Migration");
+            Console.WriteLine("4.- Exit");
         }
 
         private void ValidateConnection()
