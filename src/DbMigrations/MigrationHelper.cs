@@ -34,18 +34,18 @@
             }
 
             bool parseToInt = int.TryParse(option, out int optionNumber);
-
             if (!parseToInt || optionNumber <= 0)
             {
                 return MenuOption.None;
             }
 
-            var enumlenght2 = Enum.GetValues(typeof(MenuOption));
             var enumlenght = Enum.GetValues(typeof(MenuOption)).Length;
-            if (optionNumber >= enumlenght) { return MenuOption.None; }
+            if (optionNumber >= enumlenght) 
+            {
+                return MenuOption.None; 
+            }
 
             bool parseToEnum = Enum.TryParse(option, out MenuOption result);
-
             if (!parseToEnum)
             {
                 return MenuOption.None;
