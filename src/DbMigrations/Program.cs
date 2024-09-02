@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System.Reflection.Metadata.Ecma335;
+using System.Threading.Channels;
 
 namespace DbMigrations
 {
@@ -20,9 +22,32 @@ namespace DbMigrations
                     throw new ArgumentException("Database configuration is not set properly. Please check Schema and Connection string.");
                 }
 
-               var migration = new Migration(database, dbSchema, reportHtmlPath);
-                migration.ShowScriptsHistory();
-                //migration.Migrate();
+                var option = MigrationHelper.ShowMenu();
+
+                var migration = new Migration(database, dbSchema, reportHtmlPath);
+
+                switch (option)
+                {
+                    case MenuOption.None:
+                        Console.WriteLine("This is not a valid behaviour, finishing program execution.");
+                        break;
+                    case MenuOption.DbStatus:
+                        migration.ShowScriptsHistory();
+                        break;
+                    case MenuOption.HtmlReport:
+                        migration.GetHtmlUpgradeReport();
+                        break;
+                    case MenuOption.Migrate:
+                        migration.Migrate();
+                        break;
+                    case MenuOption.Exit:
+                        Console.WriteLine("Exiting...");
+                        break;
+                    default:
+                        Console.WriteLine("This is not a valid behaviour, finishing program execution.");
+                        break;
+                }
+
             }
             catch (Exception ex)
             {
