@@ -1,4 +1,5 @@
-﻿using DbUp;
+﻿using DbMigrations.Entities;
+using DbUp;
 using DbUp.Engine;
 using DbUp.Helpers;
 using DbUp.Support;
@@ -24,7 +25,6 @@ namespace DbMigrations
         {
             ValidateConnection();
 
-            //generate report html or perform upgrade to DB
             if (_upgrader.IsUpgradeRequired())
             {
                 _upgrader.PerformUpgrade();
@@ -39,22 +39,29 @@ namespace DbMigrations
         {
             ValidateConnection();
 
+            var myscripts = new List<Script>();
+            _upgrader.GetExecutedScripts().ForEach(x=> myscripts.Add(new Script(x, true)));
+            _upgrader.GetScriptsToExecute().ForEach(x => myscripts.Add(new Script(x.Name, false)));
+
             Console.Clear();
-            Console.WriteLine("------------------------------------");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("GREEN: Executed");
+            Console.ResetColor();
+            Console.Write(" | ");
+            Console.ForegroundColor =ConsoleColor.Red;
+            Console.Write("RED: Pending");
+            Console.ResetColor();
 
-            var executedScripts = _upgrader.GetExecutedScripts().AsReadOnly();
-            foreach (var script in executedScripts)
+            Console.WriteLine("\n--------------------------------------------------------------------------");
+
+            foreach (var script in myscripts.AsReadOnly()) 
             {
-                Console.WriteLine(script);
+                Console.ForegroundColor = script.IsExecuted ? ConsoleColor.Green : ConsoleColor.Red;
+                Console.WriteLine($"{script.Name}");
+                Console.ResetColor();
             }
 
-            var toExecuteScripts = _upgrader.GetScriptsToExecute().AsReadOnly();
-            foreach (var script in toExecuteScripts)
-            {
-                Console.WriteLine(script.Name);
-            }
-
-            Console.WriteLine("------------------------------------");
+            Console.WriteLine("--------------------------------------------------------------------------");
         }
 
         public void GetHtmlUpgradeReport()

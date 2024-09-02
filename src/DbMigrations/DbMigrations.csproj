@@ -17,9 +17,7 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Scripts\" />
-  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="dbup" Version="5.0.41" />
