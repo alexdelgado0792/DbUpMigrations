@@ -10,14 +10,14 @@ namespace DbMigrations
     {
         private readonly string _connectionString;
         private readonly string _dbSchema;
-        private readonly string _reportPath;
+        private readonly string _reportFileName;
         private readonly UpgradeEngine _upgrader;
-        public Migration(string connectionString, string dbSchema, string reportPath)
+        public Migration(string connectionString, string dbSchema, string reportFileName)
         {
             _connectionString = connectionString;
             _dbSchema = dbSchema;
             _upgrader = CreateUpgrader();
-            _reportPath = reportPath;
+            _reportFileName = reportFileName;
         }
 
         public void Migrate()
@@ -63,8 +63,11 @@ namespace DbMigrations
         public void GetHtmlUpgradeReport()
         {
             ValidateConnection();
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var currentTime = DateTime.Now;
+            var fullPath = $"{path}\\{_reportFileName}_{currentTime.Month}{currentTime.Day}{currentTime.Year}_{currentTime.Ticks}.html";
 
-            _upgrader.GenerateUpgradeHtmlReport(_reportPath);
+            _upgrader.GenerateUpgradeHtmlReport(fullPath);
 
         }
 

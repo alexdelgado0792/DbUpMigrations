@@ -15,7 +15,7 @@ namespace DbMigrations
 
                 var database = configuration.GetConnectionString("ConnectionString");
                 var dbSchema = configuration.GetConnectionString("DbSchema");
-                var reportHtmlPath = configuration.GetSection("HtmlReportPath").Value;
+                var reportHtmlPath = configuration.GetSection("HtmlReportFileName").Value;
 
                 if (string.IsNullOrEmpty(database) || string.IsNullOrEmpty(dbSchema) || string.IsNullOrEmpty(reportHtmlPath)) 
                 {
