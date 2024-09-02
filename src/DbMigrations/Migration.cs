@@ -39,25 +39,22 @@ namespace DbMigrations
         {
             ValidateConnection();
 
-            var executedScripts = _upgrader.GetExecutedScripts().AsReadOnly();
-            var toExecuteScripts = _upgrader.GetScriptsToExecute().AsReadOnly();
-
             Console.Clear();
-            //show executed scripts
-
             Console.WriteLine("------------------------------------");
+
+            var executedScripts = _upgrader.GetExecutedScripts().AsReadOnly();
             foreach (var script in executedScripts)
             {
                 Console.WriteLine(script);
             }
 
-            //show pending scripts
+            var toExecuteScripts = _upgrader.GetScriptsToExecute().AsReadOnly();
             foreach (var script in toExecuteScripts)
             {
                 Console.WriteLine(script.Name);
             }
-            Console.WriteLine("------------------------------------");
 
+            Console.WriteLine("------------------------------------");
         }
 
         public void GetHtmlUpgradeReport()
