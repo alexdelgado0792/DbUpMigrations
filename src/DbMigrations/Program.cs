@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading.Channels;
 
 namespace DbMigrations
 {
@@ -17,14 +15,14 @@ namespace DbMigrations
                 var dbSchema = configuration.GetConnectionString("DbSchema");
                 var reportHtmlPath = configuration.GetSection("HtmlReportFileName").Value;
 
-                if (string.IsNullOrEmpty(database) || string.IsNullOrEmpty(dbSchema) || string.IsNullOrEmpty(reportHtmlPath)) 
+                if (string.IsNullOrEmpty(database) || string.IsNullOrEmpty(dbSchema) || string.IsNullOrEmpty(reportHtmlPath))
                 {
                     throw new ArgumentException("Database configuration is not set properly. Please check Schema and Connection string.");
                 }
 
                 var option = MigrationHelper.ShowMenu();
-                
-                //resert console values
+
+                //reset console values
                 Console.Clear();
                 Console.ResetColor();
 
@@ -62,7 +60,7 @@ namespace DbMigrations
                 Console.ResetColor();
                 exitCode = 1;
             }
-            
+
 
             return exitCode;
         }

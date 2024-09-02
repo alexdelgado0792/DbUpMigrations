@@ -13,6 +13,7 @@ namespace DbMigrations
         private readonly string _dbSchema;
         private readonly string _reportFileName;
         private readonly UpgradeEngine _upgrader;
+
         public Migration(string connectionString, string dbSchema, string reportFileName)
         {
             _connectionString = connectionString;
