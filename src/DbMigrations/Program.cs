@@ -23,9 +23,12 @@ namespace DbMigrations
                 }
 
                 var option = MigrationHelper.ShowMenu();
+                
+                //resert console values
+                Console.Clear();
+                Console.ResetColor();
 
                 var migration = new Migration(database, dbSchema, reportHtmlPath);
-
                 switch (option)
                 {
                     case MenuOption.None:
@@ -47,6 +50,9 @@ namespace DbMigrations
                         Console.WriteLine("This is not a valid behaviour, finishing program execution.");
                         break;
                 }
+
+                //clean coloring
+                Console.ResetColor();
 
             }
             catch (Exception ex)
