@@ -27,9 +27,22 @@ namespace DbMigrations
 
             if (_upgrader.IsUpgradeRequired())
             {
-                _upgrader.PerformUpgrade();
+                var result = _upgrader.PerformUpgrade();
+                if (result.Successful)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Success!");
+                    Console.ResetColor();
+                }
+                else 
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(result.Error);
+                    Console.ResetColor();
+                }
+
             }
-            else 
+            else
             {
                 Console.WriteLine("Up to Date, No migration needed.");
             }
@@ -40,21 +53,13 @@ namespace DbMigrations
             ValidateConnection();
 
             var myscripts = new List<Script>();
-            _upgrader.GetExecutedScripts().ForEach(x=> myscripts.Add(new Script(x, true)));
+            _upgrader.GetExecutedScripts().ForEach(x => myscripts.Add(new Script(x, true)));
             _upgrader.GetScriptsToExecute().ForEach(x => myscripts.Add(new Script(x.Name, false)));
 
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("GREEN: Executed");
-            Console.ResetColor();
-            Console.Write(" | ");
-            Console.ForegroundColor =ConsoleColor.Red;
-            Console.Write("RED: Pending");
-            Console.ResetColor();
-
+            TableHeader();
             Console.WriteLine("\n--------------------------------------------------------------------------");
 
-            foreach (var script in myscripts.AsReadOnly()) 
+            foreach (var script in myscripts.AsReadOnly())
             {
                 Console.ForegroundColor = script.IsExecuted ? ConsoleColor.Green : ConsoleColor.Red;
                 Console.WriteLine($"{script.Name}");
@@ -73,12 +78,13 @@ namespace DbMigrations
 
             _upgrader.GenerateUpgradeHtmlReport(fullPath);
 
+            Console.WriteLine($"Report generated at this location: {fullPath}");
         }
 
         private void ValidateConnection()
         {
             bool dbStabishConnection = _upgrader.TryConnect(out string msg);
-            
+
             if (!dbStabishConnection)
             {
                 throw new Exception(msg);
@@ -93,6 +99,18 @@ namespace DbMigrations
                          .LogToConsole()
                          .WithTransactionPerScript()
                          .Build();
+        }
+
+        private static void TableHeader()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("GREEN: Executed");
+            Console.ResetColor();
+            Console.Write(" | ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("RED: Pending");
+            Console.ResetColor();
         }
     }
 }
